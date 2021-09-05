@@ -140,3 +140,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roundUnit: {fileID: 8404461083933574283, guid: a0af676e77dcf5b4986f2823c876653a, type: 3}
+  squareUnit: {fileID: 6840121470539641259, guid: 568d0c9676be37b4c9a208bc9d01e986, type: 3}
+  triUnit: {fileID: 882644768374069062, guid: 288bb4bca7119934f8613287d09597dd, type: 3}
