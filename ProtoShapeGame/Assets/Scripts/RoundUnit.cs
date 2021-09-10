@@ -1,17 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [SelectionBase]
 public class RoundUnit : MonoBehaviour
 {
+    [SerializeField]
     private float unitSpeed;
     private Rigidbody rb;
 
     // Start is called before the first frame update
     void Start()
     {
-        unitSpeed = 0.01f;
         rb = GetComponent<Rigidbody>();
     }
 

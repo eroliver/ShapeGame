@@ -15,32 +15,41 @@ public class Spawner : MonoBehaviour
     private float fireRate = 1f;
     private float attackTimer = -1f;
 
+    private InputManager inputManager;
 
     private Transform spawnerTransform;
     // Start is called before the first frame update
     void Start()
     {
         spawnerTransform = gameObject.transform;
-        
+        inputManager = GameManager.gameManager.GetComponent<InputManager>();
+        inputManager.onSwipeUpEnter += SpawnRock;
+        inputManager.onSwipeRightEnter += SpawnPaper;
+        inputManager.onSwipeLeftEnter += SpawnScissors;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1) && Time.time > attackTimer)
-        {
-            Instantiate(roundUnit, spawnerTransform);
-            attackTimer = Time.time + fireRate;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2) && Time.time > attackTimer)
-        {
-            Instantiate(squareUnit, spawnerTransform);
-            attackTimer = Time.time + fireRate;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3) && Time.time > attackTimer)
-        {
-            Instantiate(triUnit, spawnerTransform);
-            attackTimer = Time.time + fireRate;
-        }
+        
+    }
+
+    void SpawnRock()
+    {
+        Instantiate(roundUnit, spawnerTransform);
+        attackTimer = Time.time + fireRate;
+    }
+
+    void SpawnPaper()
+    {
+        Instantiate(squareUnit, spawnerTransform);
+        attackTimer = Time.time + fireRate;
+    }
+
+    void SpawnScissors()
+    {
+        Instantiate(triUnit, spawnerTransform);
+        attackTimer = Time.time + fireRate;
     }
 }

@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
         onExitEnter?.Invoke();
     }
 
+
     public event Action onScoreGoal;
     public void ScoreGoal(int teamNumber)
     {
@@ -56,6 +57,7 @@ public class GameManager : MonoBehaviour
             ExitEnter();
         }
     }
+
 
     
 }

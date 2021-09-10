@@ -5,13 +5,13 @@ using UnityEngine;
 [SelectionBase]
 public class SquareUnit : MonoBehaviour
 {
+    [SerializeField]
     float unitSpeed;
     private Rigidbody rb;
 
     // Start is called before the first frame update
     void Start()
     {
-        unitSpeed = 0.01f;
         rb = GetComponent<Rigidbody>();
     }
 
