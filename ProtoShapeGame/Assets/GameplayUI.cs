@@ -27,8 +27,17 @@ public class GameplayUI : MonoBehaviour
         
     }
 
-    int UpdateUI(int health)
+    void UpdateUI(int health, GameObject spawner)
     {
-        return health;
+        if(spawner.name == "Spawner")
+        {
+            playerHP.text = health.ToString();
+        }
+        else
+        {
+            enemyHP.text = health.ToString();
+
+        }
+
     }
 }

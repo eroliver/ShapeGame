@@ -32,7 +32,7 @@ public class RoundUnit : MonoBehaviour
     {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, Vector3.left, out hit, 0.5f))
-            if (hit.transform.gameObject.tag == "scissors")
+            if (hit.transform.gameObject.tag == "scissors" || hit.transform.gameObject.tag == "spawner")
             {
                 hit.transform.SendMessage("HitByRock");
             }

@@ -24,11 +24,22 @@ public class Spawner : MonoBehaviour
         spawnerTransform = gameObject.transform;
         inputManager = GameManager.gameManager.GetComponent<InputManager>();
         inputManager.onSwipeUpEnter += SpawnRock;
-        inputManager.onSwipeRightEnter += SpawnPaper;
-        inputManager.onSwipeLeftEnter += SpawnScissors;
+        inputManager.onSwipeRightEnter += SpawnScissors;
+        inputManager.onSwipeLeftEnter += SpawnPaper;
 
     }
 
+    private void OnEnable()
+    {
+        
+    }
+
+    private void OnDisable()
+    {
+        inputManager.onSwipeUpEnter -= SpawnRock;
+        inputManager.onSwipeRightEnter -= SpawnScissors;
+        inputManager.onSwipeLeftEnter -= SpawnPaper;
+    }
     // Update is called once per frame
     void Update()
     {

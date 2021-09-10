@@ -33,7 +33,7 @@ public class SquareUnit : MonoBehaviour
     {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, Vector3.left, out hit, 0.5f))
-            if (hit.transform.gameObject.tag == "rock")
+            if (hit.transform.gameObject.tag == "rock" || hit.transform.gameObject.tag == "spawner")
             {
                 hit.transform.SendMessage("HitByPaper");
             }

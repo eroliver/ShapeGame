@@ -6,8 +6,11 @@ public class SpawnerHealth : MonoBehaviour
 {
     [SerializeField]
     private int unitHealth;
+    private GameObject spawner;
 
-    public delegate int AttackedAction(int health);
+    //private Rigidbody rb;
+
+    public delegate void AttackedAction(int health, GameObject spawner);
     public static event AttackedAction OnAttacked;
 
     public void HitByScissors()
@@ -15,7 +18,12 @@ public class SpawnerHealth : MonoBehaviour
         unitHealth--;
         if(OnAttacked != null)
         {
-            OnAttacked(unitHealth);
+            OnAttacked(unitHealth, spawner);
+            Debug.Log("onattacked by scissors");
+        }
+        else
+        {
+            Debug.Log("onattacked is null");
         }
     }
     public void HitByRock()
@@ -23,7 +31,8 @@ public class SpawnerHealth : MonoBehaviour
         unitHealth--;
         if (OnAttacked != null)
         {
-            OnAttacked(unitHealth);
+            OnAttacked(unitHealth, spawner);
+            Debug.Log("onattacked by rock");
         }
     }
     public void HitByPaper()
@@ -31,13 +40,15 @@ public class SpawnerHealth : MonoBehaviour
         unitHealth--;
         if (OnAttacked != null)
         {
-            OnAttacked(unitHealth);
+            OnAttacked(unitHealth, spawner);
+            Debug.Log("onattacked by paper");
+
         }
     }
     // Start is called before the first frame update
     void Start()
     {
-        
+        spawner = this.gameObject;
     }
 
     // Update is called once per frame

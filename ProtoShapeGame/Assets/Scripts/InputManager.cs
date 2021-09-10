@@ -7,7 +7,7 @@ public class InputManager : MonoBehaviour
 {
     private Vector2 fingerDown;
     private Vector2 fingerUp;
-    public bool detectSwipeOnlyAfterRelease = false;
+    public bool detectSwipeOnlyAfterRelease = true;
 
     public float SWIPE_THRESHOLD = 20f;
 
@@ -24,14 +24,14 @@ public class InputManager : MonoBehaviour
             }
 
             //Detects Swipe while finger is still moving
-            if (touch.phase == TouchPhase.Moved)
-            {
-                if (!detectSwipeOnlyAfterRelease)
-                {
-                    fingerDown = touch.position;
-                    checkSwipe();
-                }
-            }
+            //if (touch.phase == TouchPhase.Moved)
+            //{
+            //    if (!detectSwipeOnlyAfterRelease)
+            //    {
+            //        fingerDown = touch.position;
+            //        checkSwipe();
+            //    }
+            //}
 
             //Detects swipe after finger is released
             if (touch.phase == TouchPhase.Ended)
