@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 public class UnitSpawner : MonoBehaviour
 {
@@ -17,6 +18,11 @@ public class UnitSpawner : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
+    {
+        
+    }
+
+    public void CheckSpawnLocations()
     {
         if (spawnLocations.Count == 0)
         {
@@ -37,11 +43,9 @@ public class UnitSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ChooseSpawnLocation();
-        SpawnUnit();
     }
 
-    void ChooseSpawnLocation()
+    public void ChooseSpawnLocation()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -57,7 +61,7 @@ public class UnitSpawner : MonoBehaviour
         }
     }
 
-    void SpawnUnit()
+    public void SpawnUnit()
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
@@ -76,5 +80,6 @@ public class UnitSpawner : MonoBehaviour
             unitInstance.layer = gameObject.layer;
         }
     }
+
 
 }
