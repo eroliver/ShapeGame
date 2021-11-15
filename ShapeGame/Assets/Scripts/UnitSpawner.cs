@@ -18,7 +18,20 @@ public class UnitSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (spawnLocations.Count == 0)
+        {
+            foreach (Transform childTransform in gameObject.transform)
+            {
+                if (childTransform.tag == "spawnLocation")
+                {
+                    spawnLocations.Add(childTransform);
+                }
+            }
+        }
+        if (currentSpawnLocation == null)
+        {
+            currentSpawnLocation = spawnLocations[0];
+        }
     }
 
     // Update is called once per frame
@@ -48,15 +61,20 @@ public class UnitSpawner : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            Instantiate(rockUnit, currentSpawnLocation.position, currentSpawnLocation.rotation);
+            GameObject unitInstance = Instantiate(rockUnit, currentSpawnLocation.position, currentSpawnLocation.rotation);
+            unitInstance.layer = gameObject.layer;
         }
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            Instantiate(paperUnit, currentSpawnLocation.position, currentSpawnLocation.rotation);
+            GameObject unitInstance = Instantiate(paperUnit, currentSpawnLocation.position, currentSpawnLocation.rotation);
+            unitInstance.layer = gameObject.layer;
+
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            Instantiate(scissorsUnit, currentSpawnLocation.position, currentSpawnLocation.rotation);
+            GameObject unitInstance = Instantiate(scissorsUnit, currentSpawnLocation.position, currentSpawnLocation.rotation);
+            unitInstance.layer = gameObject.layer;
         }
     }
+
 }
