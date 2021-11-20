@@ -7,6 +7,8 @@ public class PlayerNetworkScript : NetworkBehaviour
 {
     [SerializeField]
     private UnitSpawner spawner;
+    [SerializeField]
+    private List<KeyCode> unitSpawnKeys;
 
     public TextMesh playerNameText;
     public GameObject floatingInfo;
@@ -30,11 +32,9 @@ public class PlayerNetworkScript : NetworkBehaviour
     void Update()
     {
         if (!isLocalPlayer)
-        {
-            return;
-        }
+        {return;}
         spawner.ChooseSpawnLocation();
-        spawner.SpawnUnit();
+        DetectSpawnInput();
     }
 
     void OnNameChanged(string _Old, string _New)
@@ -66,4 +66,41 @@ public class PlayerNetworkScript : NetworkBehaviour
         playerColor = _col;
     }
 
+    [Command]
+    private void CmdSpawnUnit(GameObject unitInstance)
+    {
+        NetworkServer.Spawn(unitInstance);
+    }
+
+    [ClientRpc]
+    void RpcOnFire()
+    {
+        return;
+    }
+
+    [ServerCallback]
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<Unit>() != null)
+        {
+            //what to do when hit by a unit.
+            Debug.Log("base attacked.");
+        }
+    }
+
+    private void DetectSpawnInput()
+    {
+        if (Input.GetKeyDown(unitSpawnKeys[0]))
+        {
+            CmdSpawnUnit(spawner.SpawnUnit(0));
+        }
+        if (Input.GetKeyDown(unitSpawnKeys[1]))
+        {
+            CmdSpawnUnit(spawner.SpawnUnit(1));
+        }
+        if (Input.GetKeyDown(unitSpawnKeys[2]))
+        {
+            CmdSpawnUnit(spawner.SpawnUnit(2));
+        }
+    }
 }

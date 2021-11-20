@@ -7,12 +7,10 @@ public class UnitSpawner : MonoBehaviour
 {
     [SerializeField]
     private List<Transform> spawnLocations;
+
     [SerializeField]
-    private GameObject rockUnit;
-    [SerializeField]
-    private GameObject paperUnit;
-    [SerializeField]
-    private GameObject scissorsUnit;
+    private List<GameObject> units;
+
 
     private Transform currentSpawnLocation;
 
@@ -61,24 +59,11 @@ public class UnitSpawner : MonoBehaviour
         }
     }
 
-    public void SpawnUnit()
+    public GameObject SpawnUnit(int unitIndex)
     {
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            GameObject unitInstance = Instantiate(rockUnit, currentSpawnLocation.position, currentSpawnLocation.rotation);
-            unitInstance.layer = gameObject.layer;
-        }
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            GameObject unitInstance = Instantiate(paperUnit, currentSpawnLocation.position, currentSpawnLocation.rotation);
-            unitInstance.layer = gameObject.layer;
-
-        }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            GameObject unitInstance = Instantiate(scissorsUnit, currentSpawnLocation.position, currentSpawnLocation.rotation);
-            unitInstance.layer = gameObject.layer;
-        }
+        GameObject unitInstance = Instantiate(units[unitIndex], currentSpawnLocation.position, currentSpawnLocation.rotation);
+        unitInstance.layer = gameObject.layer;
+        return unitInstance;
     }
 
 
