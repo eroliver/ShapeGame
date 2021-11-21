@@ -13,7 +13,7 @@ public class PlayerScript : NetworkBehaviour
     [SyncVar(hook = nameof(OnColorChanged))]
     public Color playerColor = Color.white;
     private SharedSceneScript sceneScript;
-    private int selectedWeaponLocal = 1;
+    private int selectedWeaponLocal = 0;
     [SerializeField]
     private GameObject[] weaponArray;
     [SyncVar(hook = nameof(OnWeaponChanged))]
@@ -30,6 +30,11 @@ public class PlayerScript : NetworkBehaviour
         foreach (var item in weaponArray)
             if (item != null)
                 item.SetActive(false);
+        if (selectedWeaponLocal < weaponArray.Length && weaponArray[selectedWeaponLocal] != null)
+        {
+            activeWeapon = weaponArray[selectedWeaponLocal].GetComponent<Weapon>();
+            sceneScript.UIAmmo(activeWeapon.weaponAmmo);
+        }
     }
 
     public override void OnStartLocalPlayer()
@@ -64,6 +69,31 @@ public class PlayerScript : NetworkBehaviour
                 selectedWeaponLocal = 0;
             CmdChangeActiveWeapon(selectedWeaponLocal);
         }
+
+        if (Input.GetButtonDown("Fire1")) //Fire1 is mouse 1st click
+        {
+            if (activeWeapon && Time.time > weaponCooldownTime && activeWeapon.weaponAmmo > 0)
+            {
+                weaponCooldownTime = Time.time + activeWeapon.weaponCooldown;
+                activeWeapon.weaponAmmo -= 1;
+                sceneScript.UIAmmo(activeWeapon.weaponAmmo);
+                CmdShootRay();
+            }
+        }
+    }
+
+    [Command]
+    void CmdShootRay()
+    {
+        RpcFireWeapon();
+    }
+    [ClientRpc]
+    void RpcFireWeapon()
+    {
+        //bulletAudio.Play(); muzzleflash  etc
+        GameObject bullet = Instantiate(activeWeapon.weaponBullet, activeWeapon.weaponFirePosition.position, activeWeapon.weaponFirePosition.rotation);
+        bullet.layer = gameObject.layer;
+        Destroy(bullet, activeWeapon.weaponLife);
     }
 
     [Command]
@@ -103,8 +133,13 @@ public class PlayerScript : NetworkBehaviour
         // enable new weapon
         // in range and not null
         if (0 <= _New && _New < weaponArray.Length && weaponArray[_New] != null)
+        {
             weaponArray[_New].SetActive(true);
-    }
+            activeWeapon = weaponArray[activeWeaponSynced].GetComponent<Weapon>();
+            if (isLocalPlayer)
+            sceneScript.UIAmmo(activeWeapon.weaponAmmo);
+        }
+}
     [Command]
     public void CmdChangeActiveWeapon(int newIndex)
     {

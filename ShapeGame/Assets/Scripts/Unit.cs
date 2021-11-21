@@ -6,7 +6,7 @@ using Mirror;
 public class Unit : NetworkBehaviour
 {
     [SerializeField]
-    private float unitSpeed;
+    private float unitSpeed = 0.1f;
     [SerializeField]
     public UnitTypes unitType;
 
@@ -25,18 +25,15 @@ public class Unit : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        transform.Translate(Vector3.forward * unitSpeed * Time.deltaTime);
     }
 
     private void FixedUpdate()
     {
-        MoveUnit();
+        
     }
 
-    private void MoveUnit()
-    {
-        transform.Translate(Vector3.forward * unitSpeed);
-    }
+    
 
     private void OnCollisionEnter(Collision collision)
     {
