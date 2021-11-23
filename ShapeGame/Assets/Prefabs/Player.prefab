@@ -87,7 +87,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1319369316062902670}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -2, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3881402745989361088}
@@ -289,7 +289,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4949260296844233179}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 2, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 814871949585639461}
@@ -613,6 +613,11 @@ MonoBehaviour:
   - {fileID: 1509931144489561687}
   - {fileID: 4949260296844233179}
   activeWeaponSynced: 0
+  unitArray:
+  - {fileID: 3780317937497007139, guid: 700953007a77c2841ade05af4abdae20, type: 3}
+  - {fileID: 998171521186332778, guid: 93f897b7205c0f341af4589eafb1de47, type: 3}
+  - {fileID: 2297580948885218772, guid: 870c7dc8729fe134798922a1a782426d, type: 3}
+  activeUnitSynced: 1
 --- !u!33 &7896525045608934684
 MeshFilter:
   m_ObjectHideFlags: 0

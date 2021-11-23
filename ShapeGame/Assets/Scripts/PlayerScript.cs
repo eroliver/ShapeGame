@@ -21,7 +21,14 @@ public class PlayerScript : NetworkBehaviour
 
     private Weapon activeWeapon;
     private float weaponCooldownTime;
-    
+
+    private int selectedUnitLocal = 0;
+    [SerializeField]
+    private GameObject[] unitArray;
+    [SyncVar(hook = nameof(OnUnitChanged))]
+    public int activeUnitSynced = 1;
+    private GameObject unitPrefab;
+
     void Awake()
     {
         //allow all players to run this
@@ -80,6 +87,24 @@ public class PlayerScript : NetworkBehaviour
                 CmdShootRay();
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            selectedUnitLocal = 0;
+            CmdChangeActiveUnit(selectedUnitLocal);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            selectedUnitLocal = 1;
+            CmdChangeActiveUnit(selectedUnitLocal);
+
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            selectedUnitLocal = 2;
+            CmdChangeActiveUnit(selectedUnitLocal);
+
+        }
     }
 
     [Command]
@@ -91,7 +116,7 @@ public class PlayerScript : NetworkBehaviour
     void RpcFireWeapon()
     {
         //bulletAudio.Play(); muzzleflash  etc
-        GameObject bullet = Instantiate(activeWeapon.weaponBullet, activeWeapon.weaponFirePosition.position, activeWeapon.weaponFirePosition.rotation);
+        GameObject bullet = Instantiate(unitArray[activeUnitSynced], activeWeapon.weaponFirePosition.position, activeWeapon.weaponFirePosition.rotation);
         bullet.layer = gameObject.layer;
         Destroy(bullet, activeWeapon.weaponLife);
     }
@@ -139,12 +164,32 @@ public class PlayerScript : NetworkBehaviour
             if (isLocalPlayer)
             sceneScript.UIAmmo(activeWeapon.weaponAmmo);
         }
-}
+    }
     [Command]
     public void CmdChangeActiveWeapon(int newIndex)
     {
         activeWeaponSynced = newIndex;
     }
 
+    ////////////////////////////////////////////////////
+    void OnUnitChanged(int _Old, int _New)
+    {
+        // disable old weapon
+        // in range and not null
+        if (0 <= _Old && _Old<unitArray.Length && unitArray[_Old] != null)
+
+        // enable new weapon
+        // in range and not null
+        if (0 <= _New && _New<unitArray.Length && unitArray[_New] != null)
+        {
+            if (isLocalPlayer)
+            sceneScript.UIAmmo(activeUnitSynced);
+        }
+    }
+    [Command]
+public void CmdChangeActiveUnit(int newIndex)
+{
+    activeUnitSynced = newIndex;
+}
 
 }

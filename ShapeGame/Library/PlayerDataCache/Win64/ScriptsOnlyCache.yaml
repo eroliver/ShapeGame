@@ -524,7 +524,7 @@ ScriptsOnlyBuild:
     className: TimeoutAuthenticator
   - hash:
       serializedVersion: 2
-      Hash: 4c37fd3ba1a602691614dbe7d9d1cc69
+      Hash: fae0fa9111734a85966f6c7b62959ba2
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerScript
