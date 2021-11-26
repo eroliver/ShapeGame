@@ -1314,4 +1314,4 @@ ScriptsOnlyBuild:
   - Assets/Scenes/GamesList.unity
   - Assets/Scenes/1LaneLevel.unity
   - Assets/Scenes/3LaneLevel.unity
-  playerPath: O:/TestBuilds/ShapeGame.exe
+  playerPath: O:/TestBuild/shapeGame/ShapeGame.exe
