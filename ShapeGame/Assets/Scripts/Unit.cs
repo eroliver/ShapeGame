@@ -37,14 +37,13 @@ public class Unit : NetworkBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(collision);
         if (collision.gameObject.GetComponent<Unit>())
         {
             ResolveFight(collision.gameObject.GetComponent<Unit>().unitType);
         }
-        if (collision.gameObject.GetComponent<UnitSpawner>())
+        if (collision.gameObject.GetComponent<PlayerHealth>())
         {
-            //hit animation?
+            collision.gameObject.GetComponent<PlayerHealth>().TakeDamage();
         }
     }
 
