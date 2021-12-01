@@ -40,8 +40,8 @@ public class SharedSceneScript : NetworkBehaviour
     //maybe change this to display the currently selected unit or location
     public Text canvasAmmoText;
 
-    public void UIAmmo(int _value)
+    public void UIAmmo(string _name)
     {
-        canvasAmmoText.text = "Ammo: " + _value;
+        canvasAmmoText.text = "Unit: " + _name;
     }
 }

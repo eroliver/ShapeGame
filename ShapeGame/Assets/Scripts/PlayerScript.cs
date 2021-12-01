@@ -15,11 +15,15 @@ public class PlayerScript : NetworkBehaviour
     private SharedSceneScript sceneScript;
     private int selectedWeaponLocal = 0;
     [SerializeField]
-    private GameObject[] weaponArray;
+    private Transform[] spawnLocations;
     [SyncVar(hook = nameof(OnWeaponChanged))]
     public int activeWeaponSynced = 1;
 
-    private Weapon activeWeapon;
+    private string unitName;
+    private float unitLife = 10.0f;
+    private float unitCooldown = 0.5f;
+
+    private Transform activeSpawnLocation;
     private float weaponCooldownTime;
 
     private int selectedUnitLocal = 0;
@@ -34,13 +38,13 @@ public class PlayerScript : NetworkBehaviour
         //allow all players to run this
         sceneScript = GameObject.Find("SceneReference").GetComponent<SceneReference>().sceneScript;
         // disable all weapons
-        foreach (var item in weaponArray)
-            if (item != null)
-                item.SetActive(false);
-        if (selectedWeaponLocal < weaponArray.Length && weaponArray[selectedWeaponLocal] != null)
+        //foreach (var item in spawnLocations)
+        //    if (item != null)
+        //        item.SetActive(false);
+        if (selectedWeaponLocal < spawnLocations.Length && spawnLocations[selectedWeaponLocal] != null)
         {
-            activeWeapon = weaponArray[selectedWeaponLocal].GetComponent<Weapon>();
-            sceneScript.UIAmmo(activeWeapon.weaponAmmo);
+            activeSpawnLocation = spawnLocations[selectedWeaponLocal].GetComponent<Transform>();
+            sceneScript.UIAmmo("PlaceHolder");
         }
     }
 
@@ -48,8 +52,8 @@ public class PlayerScript : NetworkBehaviour
     {
         sceneScript.playerScript = this;
         Camera.main.transform.SetParent(transform);
-        Camera.main.transform.localPosition = new Vector3(0, 2, -2);
-        Camera.main.transform.localRotation = Quaternion.identity;
+        Camera.main.transform.localPosition = new Vector3(0, 12, 8);
+        Camera.main.transform.localRotation = Quaternion.Euler(90, -90, 0);
 
         floatingInfo.transform.localPosition = new Vector3(0, -0.3f, 0.6f);
         floatingInfo.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
@@ -57,12 +61,13 @@ public class PlayerScript : NetworkBehaviour
         Color color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
         CmdSetupPlayer(name, color);
     }
+
     void Update()
     {
-        if (!isLocalPlayer) 
+        if (!isLocalPlayer)
         {
             floatingInfo.transform.LookAt(Camera.main.transform);
-            return; 
+            return;
         }
         float moveX = Input.GetAxis("Horizontal") * Time.deltaTime * 110.0f;
         float moveZ = Input.GetAxis("Vertical") * Time.deltaTime * 4f;
@@ -72,38 +77,43 @@ public class PlayerScript : NetworkBehaviour
         if (Input.GetButtonDown("Fire2")) //Fire2 is mouse 2nd click and left alt
         {
             selectedWeaponLocal += 1;
-            if (selectedWeaponLocal >= weaponArray.Length)
+            if (selectedWeaponLocal >= spawnLocations.Length)
                 selectedWeaponLocal = 0;
             CmdChangeActiveWeapon(selectedWeaponLocal);
         }
 
         if (Input.GetButtonDown("Fire1")) //Fire1 is mouse 1st click
         {
-            if (activeWeapon && Time.time > weaponCooldownTime && activeWeapon.weaponAmmo > 0)
+            if (activeSpawnLocation && Time.time > weaponCooldownTime)
             {
-                weaponCooldownTime = Time.time + activeWeapon.weaponCooldown;
-                activeWeapon.weaponAmmo -= 1;
-                sceneScript.UIAmmo(activeWeapon.weaponAmmo);
+                weaponCooldownTime = Time.time + unitCooldown;
+                sceneScript.UIAmmo("PlaceHolder");
                 CmdShootRay();
             }
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            selectedUnitLocal = 0;
-            CmdChangeActiveUnit(selectedUnitLocal);
+            SpawnUnit(0);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            selectedUnitLocal = 1;
-            CmdChangeActiveUnit(selectedUnitLocal);
-
+            SpawnUnit(1);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            selectedUnitLocal = 2;
-            CmdChangeActiveUnit(selectedUnitLocal);
+            SpawnUnit(2);
+        }
+    }
 
+    private void SpawnUnit(int selectedUnit)
+    {
+        CmdChangeActiveUnit(selectedUnit);
+        if (activeSpawnLocation && Time.time > weaponCooldownTime)
+        {
+            weaponCooldownTime = Time.time + unitCooldown;
+            sceneScript.UIAmmo("PlaceHolder");
+            CmdShootRay();
         }
     }
 
@@ -116,9 +126,9 @@ public class PlayerScript : NetworkBehaviour
     void RpcFireWeapon()
     {
         //bulletAudio.Play(); muzzleflash  etc
-        GameObject bullet = Instantiate(unitArray[activeUnitSynced], activeWeapon.weaponFirePosition.position, activeWeapon.weaponFirePosition.rotation);
-        bullet.layer = gameObject.layer;
-        Destroy(bullet, activeWeapon.weaponLife);
+        GameObject unit = Instantiate(unitArray[activeUnitSynced], activeSpawnLocation.transform.position, activeSpawnLocation.transform.rotation);
+        unit.layer = gameObject.layer;
+        Destroy(unit, unitLife);
     }
 
     [Command]
@@ -152,17 +162,17 @@ public class PlayerScript : NetworkBehaviour
     {
         // disable old weapon
         // in range and not null
-        if (0 <= _Old && _Old < weaponArray.Length && weaponArray[_Old] != null)
-            weaponArray[_Old].SetActive(false);
+        if (0 <= _Old && _Old < spawnLocations.Length && spawnLocations[_Old] != null)
+            //spawnLocations[_Old].SetActive(false);
 
         // enable new weapon
         // in range and not null
-        if (0 <= _New && _New < weaponArray.Length && weaponArray[_New] != null)
+        if (0 <= _New && _New < spawnLocations.Length && spawnLocations[_New] != null)
         {
-            weaponArray[_New].SetActive(true);
-            activeWeapon = weaponArray[activeWeaponSynced].GetComponent<Weapon>();
+            //spawnLocations[_New].SetActive(true);
+            activeSpawnLocation = spawnLocations[activeWeaponSynced].GetComponent<Transform>();
             if (isLocalPlayer)
-            sceneScript.UIAmmo(activeWeapon.weaponAmmo);
+                sceneScript.UIAmmo(activeSpawnLocation.transform.position.ToString());
         }
     }
     [Command]
@@ -176,20 +186,20 @@ public class PlayerScript : NetworkBehaviour
     {
         // disable old weapon
         // in range and not null
-        if (0 <= _Old && _Old<unitArray.Length && unitArray[_Old] != null)
+        if (0 <= _Old && _Old < unitArray.Length && unitArray[_Old] != null)
 
-        // enable new weapon
-        // in range and not null
-        if (0 <= _New && _New<unitArray.Length && unitArray[_New] != null)
-        {
-            if (isLocalPlayer)
-            sceneScript.UIAmmo(activeUnitSynced);
-        }
+            // enable new weapon
+            // in range and not null
+            if (0 <= _New && _New < unitArray.Length && unitArray[_New] != null)
+            {
+                if (isLocalPlayer)
+                    sceneScript.UIAmmo(unitArray[activeUnitSynced].name);
+            }
     }
     [Command]
-public void CmdChangeActiveUnit(int newIndex)
-{
-    activeUnitSynced = newIndex;
-}
+    public void CmdChangeActiveUnit(int newIndex)
+    {
+        activeUnitSynced = newIndex;
+    }
 
 }

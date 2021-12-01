@@ -87,7 +87,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1319369316062902670}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2, y: 0, z: 0}
+  m_LocalPosition: {x: -3, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3881402745989361088}
@@ -155,12 +155,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79e57f7926647c346b93ae9205cf4f0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponSpeed: 10
-  weaponLife: 10
-  weaponCooldown: 1
-  weaponAmmo: 15
-  weaponBullet: {fileID: 3780317937497007139, guid: 700953007a77c2841ade05af4abdae20, type: 3}
-  weaponFirePosition: {fileID: 3881402745989361088}
+  unitName: 
+  unitLife: 10
+  unitCooldown: 1
 --- !u!1 &1509931144489561687
 GameObject:
   m_ObjectHideFlags: 0
@@ -256,12 +253,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79e57f7926647c346b93ae9205cf4f0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponSpeed: 10
-  weaponLife: 10
-  weaponCooldown: 1
-  weaponAmmo: 15
-  weaponBullet: {fileID: 998171521186332778, guid: 93f897b7205c0f341af4589eafb1de47, type: 3}
-  weaponFirePosition: {fileID: 7823002831685979824}
+  unitName: 
+  unitLife: 10
+  unitCooldown: 1
 --- !u!1 &4949260296844233179
 GameObject:
   m_ObjectHideFlags: 0
@@ -289,7 +283,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4949260296844233179}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: 0, z: 0}
+  m_LocalPosition: {x: 3, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 814871949585639461}
@@ -357,12 +351,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79e57f7926647c346b93ae9205cf4f0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponSpeed: 10
-  weaponLife: 10
-  weaponCooldown: 1
-  weaponAmmo: 15
-  weaponBullet: {fileID: 2297580948885218772, guid: 870c7dc8729fe134798922a1a782426d, type: 3}
-  weaponFirePosition: {fileID: 814871949585639461}
+  unitName: 
+  unitLife: 10
+  unitCooldown: 1
 --- !u!1 &5360028743607188227
 GameObject:
   m_ObjectHideFlags: 0
@@ -386,13 +377,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5360028743607188227}
-  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
-  m_LocalPosition: {x: 0, y: 2, z: -2}
+  m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
+  m_LocalPosition: {x: 0, y: 10, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1405597792353760430}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: -90, z: 0}
 --- !u!1 &6289988574733677702
 GameObject:
   m_ObjectHideFlags: 0
@@ -609,10 +600,10 @@ MonoBehaviour:
   floatingInfo: {fileID: 7271504288445901153}
   playerName: Zeno
   playerColor: {r: 1, g: 1, b: 1, a: 1}
-  weaponArray:
-  - {fileID: 1319369316062902670}
-  - {fileID: 1509931144489561687}
-  - {fileID: 4949260296844233179}
+  spawnLocations:
+  - {fileID: 3881402745989361088}
+  - {fileID: 7823002831685979824}
+  - {fileID: 814871949585639461}
   activeWeaponSynced: 0
   unitArray:
   - {fileID: 3780317937497007139, guid: 700953007a77c2841ade05af4abdae20, type: 3}
@@ -738,8 +729,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 5.46728, y: 2, z: 1}
-  m_Center: {x: 0.18504453, y: 0, z: 0}
+  m_Size: {x: 5.46728, y: 1, z: 2.1021204}
+  m_Center: {x: 0, y: -0.31680882, z: -2.1989398}
 --- !u!1 &7271504288445901153
 GameObject:
   m_ObjectHideFlags: 0
