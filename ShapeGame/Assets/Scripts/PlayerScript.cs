@@ -33,6 +33,8 @@ public class PlayerScript : NetworkBehaviour
     public int activeUnitSynced = 1;
     private GameObject unitPrefab;
 
+    private SwipeDetection swipeDetection;
+
     void Awake()
     {
         //allow all players to run this
@@ -47,7 +49,7 @@ public class PlayerScript : NetworkBehaviour
             sceneScript.UIAmmo("PlaceHolder");
         }
     }
-
+    
     public override void OnStartLocalPlayer()
     {
         sceneScript.playerScript = this;
@@ -60,10 +62,13 @@ public class PlayerScript : NetworkBehaviour
         string name = "Player" + Random.Range(100, 999);
         Color color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
         CmdSetupPlayer(name, color);
+        swipeDetection = gameObject.GetComponent<SwipeDetection>();
+        
     }
-
+    
     void Update()
     {
+
         if (!isLocalPlayer)
         {
             floatingInfo.transform.LookAt(Camera.main.transform);
@@ -106,7 +111,7 @@ public class PlayerScript : NetworkBehaviour
         }
     }
 
-    private void SpawnUnit(int selectedUnit)
+    public void SpawnUnit(int selectedUnit)
     {
         CmdChangeActiveUnit(selectedUnit);
         if (activeSpawnLocation && Time.time > weaponCooldownTime)
@@ -202,4 +207,7 @@ public class PlayerScript : NetworkBehaviour
         activeUnitSynced = newIndex;
     }
 
+
+    //Swipe detection, seperate out if possible
+    
 }
